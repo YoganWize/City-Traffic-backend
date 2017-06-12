@@ -1,3 +1,10 @@
+
+
+
+http://mherman.org/blog/2016/05/26/swagger-and-nodejs/#.WSwt3evyjRZ
+
+
+/////////////////////////////// L1
 npm install ts-node -g
 npm install nodemon -g
 npm install mocha -g

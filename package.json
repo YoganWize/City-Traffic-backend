@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "npm run serve",
     "serve": "nodemon --watch *.ts --exec ts-node ./index.ts",
     "test": "mocha --compilers ts:ts-node/register,tsx:ts-node/register --recursive"
   },
@@ -15,6 +16,8 @@
     "@types/chai-http": "0.0.29",
     "@types/debug": "0.0.29",
     "@types/express": "^4.0.33",
+    "@types/glob": "^5.0.30",
+    "@types/lodash": "^4.14.64",
     "@types/mocha": "^2.2.32",
     "@types/morgan": "^1.7.32",
     "@types/node": "^6.0.46",
@@ -26,6 +29,8 @@
   },
   "dependencies": {
     "body-parser": "^1.17.2",
-    "express": "^4.15.3"
+    "express": "^4.15.3",
+    "glob": "^7.1.2",
+    "lodash": "^4.17.4"
   }
 }

@@ -2,15 +2,18 @@ import * as path from 'path';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 
+
+import { TestDataRouter, UsersRouter }  from './routes/index';
+
 class App {
     // ref to Express instance
     public express:express.Application;
 
     //Run configuration methods on the Express instance.
-    constructor() {
+    constructor(appSettings?) {
         this.express = express();
         this.middleware();
-        this.routes();
+        this.routes(/*appSettings.apiPath, appSettings.apiVersion*/);
 
     }
 
@@ -22,6 +25,9 @@ class App {
 
     // Configure API endpoints.
     private routes():void {
+        //this.express.use('./api', router);
+
+
         let router = express.Router();
         // placeholder route handler
         router.get('/', (req, res, next) => {
@@ -30,6 +36,8 @@ class App {
             });
         });
         this.express.use('/', router);
+        this.express.use('/api/v1/test-data', TestDataRouter );
+        this.express.use('/api/v1/users', UsersRouter );
     }
 }
 
