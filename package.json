@@ -29,8 +29,9 @@
   },
   "dependencies": {
     "body-parser": "^1.17.2",
-    "express": "^4.15.3",
+    "express": "^4.15.3"
     "glob": "^7.1.2",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "mongoose": "^4.10.5"
   }
 }
