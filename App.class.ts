@@ -27,12 +27,15 @@ class App {
     private routes():void {
         //this.express.use('./api', router);
 
-
+        this.express.use((req, res, next)=> {
+            console.log(req.baseUrl, req.method, Date.now());
+            next()
+        });
         let router = express.Router();
         // placeholder route handler
         router.get('/', (req, res, next) => {
             res.json({
-                message: 'Hello World!'
+                message: 'Hello rld!'
             });
         });
         this.express.use('/', router);

@@ -20,9 +20,14 @@ let LogSchema  = mongoose.Schema({
 
 
 LogSchema.statics.getAllOfThem = function(cb) {
-   return this.find({},cb)
-}
 
+   return this.find({},cb)
+
+}
+LogSchema.pre('save',function(next){
+    console.log(this);
+    next();
+});
 export const LogModel = function(obj?) {
 
 

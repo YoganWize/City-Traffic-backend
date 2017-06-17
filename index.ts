@@ -14,7 +14,7 @@ DAL.init();
 ///////////
 
 let log = new DAL.LogModel();
-log.message = 'tst';
+log.message = 'tst1';
 log.date = new Date();
 log.save();
 
