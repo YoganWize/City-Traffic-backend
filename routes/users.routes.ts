@@ -1,5 +1,6 @@
-import { Router, Request, Response, NextFunction } from 'express';
-
+import {Router, Request, Response, NextFunction} from 'express';
+import DAL from '../modules/dal/DAL.class';
+const User = DAL.UserModel;
 
 export class UsersRouter {
     router: Router;
@@ -10,13 +11,42 @@ export class UsersRouter {
     }
 
     public getAll(req: Request, res: Response, next: NextFunction) {
-        res.send(['list of all']);
+        //res.send(['list of all']);
+        User.find().then((users) => {
+            res.json(users);
+        })
+            .catch(err => next(err));
+
 
     }
 
+    public create(req: Request, res: Response, next: NextFunction) {
+        //res.send(['list of all']);
+        //console.log(req.query);
+        //console.log(req.body);
+        const {name} = req.body;
+        const user = new User({name});
+        console.log(user);
+
+        User.create(user).then((user) => {
+            res.json(user);
+        })
+            .catch(err => next(err));
+
+
+    }
+
+
+    public CheckById(req: Request, res: Response, next: NextFunction) {
+        console.log(req.params);
+        if (req.params.id === '1') res.send({user: {name: 'Admin'}});
+    }
+
+
+
     public getById(req: Request, res: Response, next: NextFunction) {
         console.log(req.params);
-        if (req.params.id === '1')  res.send({user:{name:'Admin'}});
+        if (req.params.id === '1') res.send({user: {name: 'Admin'}});
     }
 
     /**
@@ -31,5 +61,4 @@ export class UsersRouter {
 }
 
 // Create the HeroRouter, and export its configured Express.Router
-const usersRouter = new UsersRouter();
-export default usersRouter.router;
+export const usersRouter = new UsersRouter();

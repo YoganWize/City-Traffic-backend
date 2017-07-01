@@ -4,7 +4,8 @@ let Schema = mongoose.Schema;
 let routeSchema = new Schema({
     pointA: String,
     pointB: String,
-    description: String
+    description: String,
+    userid: ObjectId
 });
 
 let route = mongoose.model('route', routeSchema);

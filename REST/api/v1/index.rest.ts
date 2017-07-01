@@ -1,4 +1,5 @@
-import { IRestData } from './../../index.interface'
+import { IRestData } from './../../index.interface';
+import {usersRouter} from '../../../routes/users.routes';
 export const paths:IRestData[] = [
     {
         description:'all repository actions endpoint',
@@ -7,6 +8,18 @@ export const paths:IRestData[] = [
         controller: function(req, res, next) {
             res.send('yo!')
         }
+    },
+    {
+        description:'',
+        method: 'get',
+        path: `users`,
+        controller: usersRouter.getAll
+    },
+    {
+        description:'',
+        method: 'post',
+        path: `users`,
+        controller: usersRouter.create
     },
 
 ];

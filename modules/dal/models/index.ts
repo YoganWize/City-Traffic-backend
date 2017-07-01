@@ -1,4 +1,6 @@
-import { LogModel } from './Log.model';
+import {LogModel} from './Log.model';
+import {UserModel} from './User.model';
 export {
-    LogModel
+    LogModel,
+    UserModel
 }
