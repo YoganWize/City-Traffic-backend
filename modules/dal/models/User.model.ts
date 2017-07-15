@@ -11,7 +11,6 @@ let userSchema  = mongoose.Schema({
     name: {
         type: String,
         required: true
-
     },
     age:{
         type:String

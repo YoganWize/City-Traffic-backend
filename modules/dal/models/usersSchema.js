@@ -5,6 +5,7 @@ let userSchema = new Schema({
     name: String,
     routes: [String],
     email: String,
+    role: String,
     password: String
 });
 

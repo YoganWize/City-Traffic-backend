@@ -3,17 +3,29 @@ mongoose.connect('mongodb://interuser:t54t62a@ds121622.mlab.com:21622/intersogdb
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open',() => console.log('connected to Mongo') );
+db.once('open',() => console.log('connected to Mongo'));
 
 let User = require('./usersSchema');
 let app = require('express')();
+let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
+app.use(cookieParser());
 app.use(bodyParser.json({}));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/', (req, res)=> {
+    res.cookie('admin', '');
+    res.cookie('user', '');
     res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/admin', (req, res)=> {
+    if(req.cookies.admin == 'yes'){
+        res.sendFile(__dirname + '/admin.html');
+    }else{
+        res.sendStatus(401);
+    }
 });
 
 app.get('/users', (req, res)=> {
@@ -24,16 +36,49 @@ app.get('/users', (req, res)=> {
 });
 
 app.post('/', (req, res)=> {
-    if( req.body.email && req.body.password){
-        let user = new User({name: req.body.name, email: req.body.email, password: req.body.password});
-        user.save((err)=> {
-            if(err) console.log(err);
-            res.send(200);
-        });
-    }else {
-        res.send(400);
+    console.log(req.cookies);
+    User.find({email: req.body.email, password: req.body.password}, (err, users)=> {
+        if(err) console.log(err);
+        if(users.length <= 0){
+            res.sendStatus(401);
+        }else {
+          if(users[0].role == 'admin'){
+              res.cookie('admin', 'yes');
+              res.send(200);
+          }else {
+              res.cookie('user', 'yes');
+              res.send(200);
+          }
+        };
+    });
+    // if( req.body.email && req.body.password){
+    //     // let user = new User({name: req.body.name, email: req.body.email, password: req.body.password, role: 'user'});
+    //     // user.save((err)=> {
+    //     //     if(err) console.log(err);
+    //     //     res.cookie('user', 'yes');
+    //     //     res.send(200);
+    //     // });
+    // }else {
+    //     res.send(400);
+    // }
+});
+
+app.post('/admin', (req, res)=> {
+    if(req.cookies.admin == 'yes'){
+        if( req.body.email && req.body.password){
+            let user = new User({name: req.body.name, email: req.body.email, password: req.body.password, role: 'admin'});
+            user.save((err)=> {
+                if(err) console.log(err);
+                res.send(200);
+            });
+        }else {
+            res.send(400);
+        }
+    }else{
+        res.sendStatus(401);
     }
 });
+
 
 app.listen(8080);
 //let Route = require('./routeSchema');
