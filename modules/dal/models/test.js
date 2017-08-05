@@ -1,11 +1,11 @@
 let mongoose = require('mongoose');
-mongoose.connect('mongodb://interuser:t54t62a@ds121622.mlab.com:21622/intersogdb');
+//mongoose.connect('mongodb://interuser:t54t62a@ds121622.mlab.com:21622/intersogdb');
 
-let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open',() => console.log('connected to Mongo'));
+//let db = mongoose.connection;
+//db.on('error', console.error.bind(console, 'connection error:'));
+//db.once('open',() => console.log('connected to Mongo'));
 
-let User = require('./usersSchema');
+//let User = require('./usersSchema');
 let app = require('express')();
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
@@ -78,7 +78,34 @@ app.post('/admin', (req, res)=> {
         res.sendStatus(401);
     }
 });
-
+//
+// let Sequelize = require('sequelize');
+//
+// const sequelize = new Sequelize('postgres://postgres:t54t62a@localhost:5432/city_trafic');
+//
+// const User = sequelize.define('user', {
+//     name: {
+//         type: Sequelize.STRING
+//     },
+//     email: {
+//         type: Sequelize.STRING
+//     },
+//     password: {
+//         type: Sequelize.STRING
+//     },
+//     role: {
+//         type: Sequelize.STRING
+//     }
+// });
+//
+// User.findAll().then(users => {
+//     console.log(users)
+// });
+const pgp = require('pg-promise')();
+const db = pgp('postgres://postgres:t54t62a@localhost:5432/city_trafic');
+db.query('SELECT * from "users"').then((result)=> {
+    console.log(result);
+});
 
 app.listen(8080);
 

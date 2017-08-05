@@ -9,17 +9,25 @@
 </head>
 
 <body>
-<form action="/" enctype="application/x-www-form-urlencoded" method="post">
+<form action="/" enctype="application/x-www-form-urlencoded" method="post" style="display: none">
     email:
     <input type="email" required name="email"><br>
     password:
     <input type="password" required name="password"><br>
     <input type="submit">
 </form>
-<textarea id="chat"></textarea>
-<input type="text" id="inputField" onkeypress="userTypes()"><button onclick="userSendsMessage()">send message</button>
+<form action="" onsubmit="userSendsMessage(event)">
+    <textarea cols="50" rows="30" id="chat" disabled></textarea><br>
+    <input type="text" id="inputField" onkeypress="userTypes()" required>
+    <button type="submit">send message</button>
+</form>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
 <script>
+    setInterval(()=> {
+        let chatWindow = document.getElementById('chat');
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }, 100);
+
     var socket = io();
     socket.on('news', function (data) {
         console.log(data);
@@ -28,11 +36,20 @@
     socket.on('newMessage', (message)=> {
         document.getElementById('chat').value += message + '\n';
     });
+    socket.on('history', messages=> {
+        messages.forEach(item=> {
+            let sendTime = new Date(item.sendTime);
+            sendTime = sendTime.toLocaleTimeString();
+            document.getElementById('chat').value += item.message + ` (${sendTime})\n`;
+        });
+    });
+
     function userTypes() {
         console.log('123');
         socket.emit('userTypes', document.getElementById('inputField').value);
     }
-    function userSendsMessage() {
+    function userSendsMessage(ev) {
+        ev.preventDefault();
         socket.emit('userSendsMessage', document.getElementById('inputField').value);
     }
 </script>
